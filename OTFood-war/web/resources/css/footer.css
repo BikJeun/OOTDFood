@@ -8,10 +8,19 @@ and open the template in the editor.
     Author     : Mitsuki
 */
 
-panelGrid.footer {
+.footer {
     /*    background-color: black;*/
     height: 30%;
     font-family: Camphor,Open Sans,Segoe UI,sans-serif;
     font-weight: 500;
-    max-height: 100px;
+    max-height: 10px;
+}
+
+#copyright {
+    font-family: Camphor,Open Sans,Segoe UI,sans-serif;
+    color: white;
+    position: relative;
+    top: 110px;
+    font-size: 20px;
+
 }

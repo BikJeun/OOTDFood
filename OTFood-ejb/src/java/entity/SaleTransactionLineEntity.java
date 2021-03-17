@@ -34,21 +34,17 @@ public class SaleTransactionLineEntity implements Serializable {
     @Column(nullable = false)
     @NotNull
     @Min(1)
-    private Integer serialNumber;
-    @Column(nullable = false)
-    @NotNull
-    @Min(1)
     private Integer quantity;
-    @Column(nullable = false, precision = 11, scale = 2)
-    @NotNull
-    @DecimalMin("0.00")
-    @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
-    private BigDecimal unitPrice;
-    @Column(nullable = false, precision = 11, scale = 2)
-    @NotNull
-    @DecimalMin("0.00")
-    @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
-    private BigDecimal subTotal;
+//    @Column(nullable = false, precision = 11, scale = 2)
+//    @NotNull
+//    @DecimalMin("0.00")
+//    @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
+//    private BigDecimal unitPrice;
+//    @Column(nullable = false, precision = 11, scale = 2)
+//    @NotNull
+//    @DecimalMin("0.00")
+//    @Digits(integer = 9, fraction = 2) // 11 - 2 digits to the left of the decimal point
+//    private BigDecimal subTotal;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
@@ -57,11 +53,11 @@ public class SaleTransactionLineEntity implements Serializable {
     public SaleTransactionLineEntity() {
     }
 
-    public SaleTransactionLineEntity(Integer serialNumber, Integer quantity, BigDecimal unitPrice, BigDecimal subTotal, MealEntity meal) {
-        this.serialNumber = serialNumber;
+
+    public SaleTransactionLineEntity(MealEntity meal, Integer quantity) {
         this.quantity = quantity;
-        this.unitPrice = unitPrice;
-        this.subTotal = subTotal;
+//        this.unitPrice = unitPrice;
+//        this.subTotal = subTotal;
         this.meal = meal;
     }
 
@@ -73,36 +69,12 @@ public class SaleTransactionLineEntity implements Serializable {
         this.saleTransactionLineItemId = saleTransactionLineItemId;
     }
 
-    public Integer getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(Integer serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    public BigDecimal getSubTotal() {
-        return subTotal;
-    }
-
-    public void setSubTotal(BigDecimal subTotal) {
-        this.subTotal = subTotal;
     }
 
     public MealEntity getMeal() {

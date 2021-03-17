@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:outputStylesheet library="css" name="cartDataScroller.css"/>
+
+    <h:body>
+
+        <p:commandButton id="cart" type="button" icon="fa fa-shopping-cart" style="float: right;" />
+        <p:overlayPanel for="cart" showEvent="mouseover" hideEvent="click">
+            <div class="entireCart">
+                <h:form id="cartForm">
+                    <p:dataScroller value="#{cartManagedBean.lineItems}" var="orders" mode="inline"
+                                    scrollHeight="250">
+
+                        <div class="orderItems">
+                            <div class="order-list-item p-p-5">
+                                <p:graphicImage class="image" library="images" name="#{orders.meal.image}" alt="image"/>
+                                <div class="order-list-detail">
+                                    <div class="meal-name">#{orders.meal.name}</div>
+                                    <div class="meal-quantity">Qty: #{orders.quantity}</div>
+                                </div>
+                                <div class="order-list-action">
+                                    <h:outputText value="#{orders.meal.price * orders.quantity}" styleClass="product-price">
+                                        <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText>
+                                    <p:commandButton value="Remove" icon="fa fa-remove" actionListener="#{cartManagedBean.removeFromCart}" process="@this" update="@form" style="font-size: 15px">
+                                        <f:attribute name="bento" value="#{orders.meal}"/>
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                    </p:dataScroller>
+                    <p:separator/>
+
+                    <div class="order-final">
+                        <div class="total">Total</div>
+
+                        <h:outputText value="#{cartManagedBean.totalAmount}" class="total-price">
+                            <f:convertNumber currencySymbol="$" type="currency"/>
+                        </h:outputText>
+
+                        <div class="Checkout">
+                            <p:commandButton value="Checkout" icon="fa fa-money" actionListener="#{cartManagedBean.directToCheckout}" style="font-size: 15px"/>
+                        </div>
+                    </div>
+
+                </h:form>
+
+
+
+
+
+            </div>
+        </p:overlayPanel>
+
+    </h:body>
+
+</ui:composition>
+

@@ -13,3 +13,51 @@ and open the template in the editor.
     color: red;
 }
 
+.nav-wrap.center{
+    text-align: center;
+}
+
+.nav-wrap {
+    position: relative;
+    margin: 0 auto;
+}
+
+#nav-wrap .container {
+    position:relative;
+
+}
+
+@media only screen and (min-width: 1200px)
+.nav-wrap .container {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+@media only screen and (min-width: 961px)
+.nav-wrap .container {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+@media only screen and (min-width: 1200px)
+.container {
+    width: 1156px;
+}
+
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    height: 15vh;
+}
+
+.headerValue {
+    display: inline-block;
+    position: static;
+    margin-left: 10vw;
+    /*    margin: 35px 100px 10px 100px;*/
+    margin-top: 35px;
+    padding: 35px 100px 10px 100px;
+    font-weight: 900;
+    text-align: center;
+}
+

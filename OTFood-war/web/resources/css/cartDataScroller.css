@@ -1,0 +1,68 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : 16 Mar, 2021, 5:13:17 PM
+    Author     : Mitsuki
+*/
+
+.orderItems .order-list-item {
+    display: flex;
+    align-items: center;
+}
+
+.p-p-5 {
+    padding: 0.5rem !important;
+}
+
+.image {
+    width: 150px;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
+    margin-right: 2rem;
+}
+
+.meal-name {
+    font-weight: 700;
+}
+
+.order-list-action {
+    display: flex;
+    flex-direction: column;
+}
+
+.orderItems .order-list-item .product-price {
+    font-size: 1.0rem;
+    font-weight: 600;
+    margin-bottom: .5rem;
+    align-self: flex-end;
+}
+
+.remove {
+    font-size: 1.0rem;
+    border-radius: 4px;
+    border: 1px solid #2196F3;
+
+}
+
+.Checkout {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+}
+.total {
+    font-weight: 900;
+}
+
+.order-final {
+    display: flex;
+    flex-direction: column;
+}
+
+.total-price {
+    font-size: 2.0rem;
+    font-weight: 600;
+    margin-bottom: .5rem;
+    align-self: flex-end;
+}

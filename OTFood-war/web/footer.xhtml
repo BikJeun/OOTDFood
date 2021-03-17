@@ -5,16 +5,17 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
 
-    <ui:define name="css">
-        <h:outputStylesheet library="css" name="footer.css"/>
-        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
-    </ui:define>
+    <h:outputStylesheet library="css" name="footer.css"/>
+    <!--    <ui:define name="css">
 
+            <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+        </ui:define>-->
 
+    <!--columnClasses="ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3"-->
     <h:body>
         <footer>
             <div class="footer">
-                <p:panelGrid class="footer" columns="4" layout="grid" styleClass="showcase-text-align-center" columnClasses="ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3, ui-g-12 ui-md-6 ui-lg-3">
+                <p:panelGrid class="footer" columns="4" layout="grid" styleClass="showcase-text-align-center" >
                     <h:outputText style="font-weight: bolder;" value="Contact Us"/>
                     <h:outputText style="font-weight: bolder;" value="Payment"/>
                     <h:outputText style="font-weight: bolder;" value="Follow Us"/>
@@ -31,10 +32,14 @@
                     <h:outputText value=""/>
 
                     <p:commandLink style="color: white; font-weight: lighter" actionListener="#{footerManagedBean.redirectToFAQ}" value="FAQ"/>
-                    <p:graphicImage style="width: 50%; height: 10%;" library="images" name="payment2.png" alt="payment"/>
-                    <p:graphicImage style="width: 50%; height: 30%;" library="images" name="socialMedia.png" alt="media"/>
+                    <p:graphicImage style="width: 10vw; height: 10vh;" library="images" name="payment2.png" alt="payment"/>
+                    <p:graphicImage style="width: 5vw; height: 10vh;" library="images" name="socialMedia.png" alt="media"/>
                     <h:outputText value=""/>
                 </p:panelGrid>
+            </div>
+
+            <div id="copyright">
+                <h6>&copy; 2021 IS3106. All rights reserved.</h6>
             </div>
         </footer>
     </h:body>

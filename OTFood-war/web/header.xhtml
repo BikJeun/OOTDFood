@@ -11,12 +11,8 @@
             <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
 
         </h:head>-->
-
-    <ui:define name="css">
-        <h:outputStylesheet library="css" name="/header.css"/>
-        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
-    </ui:define>
-
+    <h:outputStylesheet library="css" name="header.css"/>
+    <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
 
     <h:body>
         <h:panelGroup rendered="#{sessionScope.isLogin == false}">
@@ -28,19 +24,23 @@
 
             <!--outcome links may need to change in the future when developed-->
             <h:form>
-                <p:menubar>
-                    <p:menuitem class="headerValue" value="HOME" outcome="/index.xhtml" style="margin: 35px 100px 10px 100px; font-weight: 900;" />
-                    <p:menuitem class="headerValue" value="ABOUT" outcome="/userPages/about.xhtml" style="margin: 35px 100px 50px 100px; font-weight: 900;"/>
-                    <p:menuitem class="headerValue" outcome="/index.xhtml" style="margin-left: 50px; margin-right: 50px;">
-                        <p:graphicImage library="images" name="ootdLogo7.png" alt="ootdLogo" height="50%" style=" display: block; margin-left: auto; margin-right: auto; align-content: center"/>
-                    </p:menuitem>
+                <div id="nav-wrap" class="nav-wrap center">
+                    <p:menubar class ="container" >
+                        <!--style="margin: 35px 100px 10px 100px; font-weight: 900;-->
+                        <p:menuitem class="headerValue" value="HOME" outcome="/index.xhtml" style="margin-left: 10vw"  />
+                        <p:menuitem class="headerValue" value="ABOUT" outcome="/userPages/about.xhtml" style="margin-left: 10vw"/>
+                        <p:menuitem outcome="/index.xhtml" style="margin-left: 18vw;">
+                            <p:graphicImage library="images" name="ootdLogo7.png" alt="ootdLogo" height="80%" style=" display: block; margin-left: auto; margin-right: auto; align-content: center"/>
+                        </p:menuitem>
 
-                    <p:submenu class="headerValue" label="MEAL" style="margin: 35px 100px 50px 100px; font-weight: 900;">
-                        <p:menuitem  value="Bento" outcome="/userPages/bento.xhtml"/>
-                        <p:menuitem  value="Create Your Own Bento" outcome="/userPages/cyob.xhtml"/>
-                    </p:submenu>
-                    <p:menuitem class="headerValue" value="FAQ" outcome="/userPages/faq.xhtml" style="margin: 35px 85px 50px 100px; font-weight: 900;"/>
-                </p:menubar>
+                        <p:submenu label="MEAL" style="margin-left: 15vw; margin-top: 35px; font-weight: 900; font-family: Andale Mono, monospace;">
+                            <p:menuitem  value="Bento" outcome="/userPages/bento.xhtml"/>
+                            <p:menuitem  value="Create Your Own Bento" outcome="/userPages/cyob.xhtml"/>
+                        </p:submenu>
+                        <p:menuitem class="headerValue" value="FAQ" outcome="/userPages/faq.xhtml" style="margin-left: 15vw;"/>
+
+                    </p:menubar>
+                </div>
             </h:form>
         </h:panelGroup>
 
@@ -138,7 +138,7 @@
                             <p:outputLabel for="password" value="Password: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:inputText id="password" value="#{loginManagedBean.userManagementManagedBean.newUser.password}" required="true" requiredMessage="Password is required" />
+                            <p:password id="password" value="#{loginManagedBean.userManagementManagedBean.newUser.password}" required="true" requiredMessage="Password is required" />
                         </p:column>
                         <p:column>
                             <p:message for="password" />
@@ -147,7 +147,7 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="password2" value="Retype Password: "/>
+                            <p:outputLabel for="password2" value="Retype Password: " style="font-weight: bold;"/>
                         </p:column>
                         <p:column>
                             <p:password id="password2" value="#{loginManagedBean.userManagementManagedBean.checkingPassword}" required="true" requiredMessage="Password is required"/>
@@ -172,30 +172,41 @@
         <h:panelGroup rendered="#{sessionScope.isLogin == true}">
 
             <h:form id="logoutForm">
-                <h:outputText value="Welcome, #{sessionScope.currentUser.firstname} #{sessionScope.currentUser.lastName}"/>&nbsp;
-                <p:menuButton  value="Profile" style="height: auto; width: auto; float: right">
-                    <p:menuitem value="Profile" outcome="/userPages/profile.xhtml" icon="fa fa-user"/>
-                    <p:menuitem value="View Transaction History" outcome="/userPages/transactionHistory.xhtml" icon="fa fa-money"/>
-                </p:menuButton>
-                <p:commandButton value="Logout" actionListener="#{loginManagedBean.logout}" icon="fa fa-sign-out" style="float: right;"/>
-                <p:commandButton icon="fa fa-shopping-cart" onclick="PF('dialogCart').show()" style="float: right;" />
-                <br/>
-                <br/>
+                <div class="nav-buttons">
+                    <h:outputText value="Welcome, #{sessionScope.currentUser.firstname} #{sessionScope.currentUser.lastName}" style="color: whitesmoke"/>&nbsp;
+                    <p:menuButton  value="Profile" style="height: auto; width: auto; float: right">
+                        <p:menuitem value="Profile" outcome="/userPages/profile.xhtml" icon="fa fa-user"/>
+                        <p:menuitem value="View Transaction History" outcome="/userPages/transactionHistory.xhtml" icon="fa fa-money"/>
+                    </p:menuButton>
+                    <p:commandButton value="Logout" actionListener="#{loginManagedBean.logout}" icon="fa fa-sign-out" style="float: right;"/>
+                    <!--                <p:commandButton icon="fa fa-shopping-cart" onclick="PF('dialogCart').show()" style="float: right;" />-->
+                    <ui:insert name="cart">
+                        <ui:include src="/cartFeatures/cart.xhtml"/>
+                    </ui:insert>
+                </div>
+
+                <p:separator/>
+                <p:separator/>
+
                 <!--                    <form>-->
                 <h:form>
-                    <p:menubar>
-                        <p:menuitem class="headerValue" value="HOME" outcome="/index.xhtml" style="margin: 35px 100px 10px 100px; font-weight: 900; font-family: Raleway;" />
-                        <p:menuitem class="headerValue" value="ABOUT" outcome="/userPages/about.xhtml" style="margin: 35px 100px 50px 100px; font-weight: 900; font-family: Raleway;"/>
-                        <p:menuitem class="headerValue" outcome="/index.xhtml" style="margin-left: 50px; margin-right: 50px;">
-                            <p:graphicImage library="images" name="ootdLogo7.png" alt="ootdLogo" height="50%" style=" display: block; margin-left: auto; margin-right: auto; align-content: center"/>
-                        </p:menuitem>
+                    <div id="nav-wrap" class="nav-wrap center">
+                        <p:menubar class ="container" >
+                            <!--style="margin: 35px 100px 10px 100px; font-weight: 900;-->
+                            <p:menuitem class="headerValue" value="HOME" outcome="/index.xhtml" style="margin-left: 10vw"  />
+                            <p:menuitem class="headerValue" value="ABOUT" outcome="/userPages/about.xhtml" style="margin-left: 10vw"/>
+                            <p:menuitem outcome="/index.xhtml" style="margin-left: 18vw;">
+                                <p:graphicImage library="images" name="ootdLogo7.png" alt="ootdLogo" height="80%" style=" display: block; margin-left: auto; margin-right: auto; align-content: center"/>
+                            </p:menuitem>
 
-                        <p:submenu class="headerValue" label="MEAL" style="margin: 35px 100px 50px 100px; font-weight: 900; font-family: Raleway;">
-                            <p:menuitem class="headerValue" value="Bento" outcome="/userPages/bento.xhtml" style="font-family: Raleway;"/>
-                            <p:menuitem class="headerValue" value="Create Your Own Bento" outcome="/userPages/cyob.xhtml" style="font-family: Raleway;"/>
-                        </p:submenu>
-                        <p:menuitem class="headerValue" value="FAQ" outcome="/userPages/faq.xhtml" style="margin: 35px 85px 50px 100px; font-weight: 900; font-family: Raleway;"/>
-                    </p:menubar>
+                            <p:submenu label="MEAL" style="margin-left: 15vw; margin-top: 35px; font-weight: 900; font-family: Andale Mono, monospace;">
+                                <p:menuitem  value="Bento" outcome="/userPages/bento.xhtml"/>
+                                <p:menuitem  value="Create Your Own Bento" outcome="/userPages/cyob.xhtml"/>
+                            </p:submenu>
+                            <p:menuitem class="headerValue" value="FAQ" outcome="/userPages/faq.xhtml" style="margin-left: 15vw;"/>
+
+                        </p:menubar>
+                    </div>
                 </h:form>
             </h:form>
         </h:panelGroup>
