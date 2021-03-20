@@ -2,9 +2,9 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="./../template/defaultTemplate.xhtml"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="css">
         <h:outputStylesheet name="css/viewBentos.css"/>
@@ -12,12 +12,12 @@
     </ui:define>
 
     <ui:define name="content">
-
+        <h:outputScript library="js" name="ifSpinnerQuantityZero.js" />
         <h:form>
             <p:tabView value="#{viewBentoManagedBean.listOfCategories}" var="bentoCategory" >
 
                 <p:ajax event="tabChange" listener="#{viewBentoManagedBean.refreshListByTabSelected}" update="dataViewOfBentos"/> 
-                
+
                 <p:tab transient="true" title="#{bentoCategory}">
 
 
@@ -26,9 +26,25 @@
                                 gridIcon="pi pi-th-large" listIcon="pi pi-bars"
                                 layout="grid" >
 
+                        
+                        <!--need help big on line 44-->
                         <p:dataViewGridItem>
+
                             <p:graphicImage url="./../resources/images/mealImages/bento5.jpg" styleClass="viewBentoSingleImage"/>
                             <div><span>#{bentoEntity.name}</span></div>
+
+                            <h:outputText value="#{bentoEntity.description}"/><br/>
+                            <h:outputText value="Calories: #{bentoEntity.calorie} kCal"/><br/>
+                            <p:outputLabel value="$#{bentoEntity.price}"/><br/>
+                            
+                            <p:toolbar>
+                                <p:toolbarGroup>
+                                    <p:outputLabel for="bentoQuantity" value="Quantity"/>
+                                    <p:inputNumber id="bentoQuantity" value="#{cartManagedBean.amtToCart}" minValue="0" maxValue="10"/>
+                                    <p:commandButton action="#{cartManagedBean.addToCart(bentoEntity)}" title="Add to Cart" />
+                                </p:toolbarGroup>
+                            </p:toolbar>
+
                         </p:dataViewGridItem>
 
                         <p:dataViewListItem>
