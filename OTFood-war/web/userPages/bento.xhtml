@@ -51,6 +51,14 @@
                         <p:dataViewListItem>
                             <p:graphicImage url="./../resources/images/mealImages/bento5.jpg" styleClass="viewBentoSingleImage"/>
                             <div><span>#{bentoEntity.name}</span></div>
+
+                            <h:outputText value="#{bentoEntity.description}"/><br/>
+                            <h:outputText value="Calories: #{bentoEntity.calorie} kCal"/><br/>
+                            <p:outputLabel value="$#{bentoEntity.price}"/><br/>
+
+                            <p:commandButton title="Order" onclick="PF('enterQtyDlg').show();">
+                                <f:setPropertyActionListener value="#{bentoEntity}" target="#{viewBentoManagedBean.selectedBento}" />
+                            </p:commandButton>
                         </p:dataViewListItem>
 
                     </p:dataView>
