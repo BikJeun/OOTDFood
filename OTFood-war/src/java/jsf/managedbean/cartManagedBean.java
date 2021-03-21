@@ -10,13 +10,14 @@ import ejb.session.stateless.MealEntitySessionBeanLocal;
 import ejb.session.stateless.PromoSessionBeanLocal;
 import ejb.session.stateless.SaleTransactionEntitySessionBeanLocal;
 import entity.AddressEntity;
+import entity.BentoEntity;
 import entity.CreditCardEntity;
 import entity.MealEntity;
 import entity.OTUserEntity;
 import entity.PromoCodeEntity;
 import entity.SaleTransactionEntity;
 //import entity.Order;
-import entity.SaleTransactionLineEntity;
+import entity.SaleTransactionLineItemEntity;
 import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -32,6 +33,8 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 import org.primefaces.PrimeFaces;
 import util.exception.CreateNewSaleTransactionException;
 import util.exception.InputDataValidationException;
@@ -59,9 +62,9 @@ public class cartManagedBean implements Serializable {
     private SaleTransactionEntitySessionBeanLocal saleTransactionEntitySessionBean;
 
     private OTUserEntity currentUser;
-    private SaleTransactionLineEntity selectedItem;
+    private SaleTransactionLineItemEntity selectedItem;
 //    private List<Order> orders;
-    private List<SaleTransactionLineEntity> lineItems;
+    private List<SaleTransactionLineItemEntity> lineItems;
     private SaleTransactionEntity order;
 
     private BigDecimal totalAmount;
@@ -78,7 +81,8 @@ public class cartManagedBean implements Serializable {
     boolean checkoutComplete;
 
     boolean isEmpty;
-
+    
+    private BentoEntity currentSelectedBento;
     /**
      * Creates a new instance of cartManagedBean
      */
@@ -87,21 +91,25 @@ public class cartManagedBean implements Serializable {
         lineItems = new ArrayList<>();
         amtToCart = 0;
         totalAmount = new BigDecimal("0.00");
+        currentSelectedBento = new BentoEntity();
 
     }
 
     @PostConstruct
     public void postConstruct() {
         try {
-            getFakeData();
+            //getFakeData();
             System.out.println(">>>>> FINISH <<<<<<");
-        } catch (MealNotFoundException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(cartManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
     public void addToCart(MealEntity meal) {
+        
+        System.out.println("~~~~~~~~~~~~~Added to Cart~~~~~~~~~~~``");
+        System.out.println("~~~~~~~~~~~~~~Current Cart: " + this.lineItems);
         //checks if the meal already exists in the cart;
         int currentIndexInCart = existInCart(meal);
 
@@ -110,7 +118,7 @@ public class cartManagedBean implements Serializable {
         } else {
             if (currentIndexInCart == -1) {
 //                orders.add(new Order(meal, amtToCart));
-                lineItems.add(new SaleTransactionLineEntity(meal, amtToCart));
+                lineItems.add(new SaleTransactionLineItemEntity(meal, amtToCart));
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Added to cart!.", null));
             } else {
 //                int qty = orders.get(currentIndexInCart).getQuantity() + amtToCart;
@@ -123,6 +131,14 @@ public class cartManagedBean implements Serializable {
         }
         totalAmount();
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cartEmpty", false);
+    }
+    
+  
+    
+    public void updateAmtToCartFromSpinner(AjaxBehaviorEvent event) {
+        System.out.println("@@@@@@@@@@@@@@@ Update amt to cart from spinner called @@@@@@@@@@@@@");
+        
+        setAmtToCart(amtToCart);
     }
 
     private int existInCart(MealEntity meal) {
@@ -144,7 +160,7 @@ public class cartManagedBean implements Serializable {
 //        for (Order ord : this.orders) {
 //            totalAmount = totalAmount.add(ord.getMeal().getPrice().multiply(BigDecimal.valueOf(ord.getQuantity())));
 //        }
-        for (SaleTransactionLineEntity ord : this.lineItems) {
+        for (SaleTransactionLineItemEntity ord : this.lineItems) {
             totalAmount = totalAmount.add(ord.getMeal().getPrice().multiply(BigDecimal.valueOf(ord.getQuantity())));
         }
         System.out.println(totalAmount);
@@ -270,10 +286,10 @@ public class cartManagedBean implements Serializable {
 
     private void getFakeData() throws MealNotFoundException {
         System.out.println(">>>>>> fake data <<<<<<<<");
-        SaleTransactionLineEntity order1 = new SaleTransactionLineEntity(mealEntitySessionBean.retrieveMealById(1l), 2);
-        SaleTransactionLineEntity order2 = new SaleTransactionLineEntity(mealEntitySessionBean.retrieveMealById(2l), 1);
-        SaleTransactionLineEntity order3 = new SaleTransactionLineEntity(mealEntitySessionBean.retrieveMealById(3l), 4);
-        SaleTransactionLineEntity order4 = new SaleTransactionLineEntity(mealEntitySessionBean.retrieveMealById(4l), 3);
+        SaleTransactionLineItemEntity order1 = new SaleTransactionLineItemEntity(mealEntitySessionBean.retrieveMealById(1l), 2);
+        SaleTransactionLineItemEntity order2 = new SaleTransactionLineItemEntity(mealEntitySessionBean.retrieveMealById(2l), 1);
+        SaleTransactionLineItemEntity order3 = new SaleTransactionLineItemEntity(mealEntitySessionBean.retrieveMealById(3l), 4);
+        SaleTransactionLineItemEntity order4 = new SaleTransactionLineItemEntity(mealEntitySessionBean.retrieveMealById(4l), 3);
 //        orders.add(order1);
 //        orders.add(order2);
 //        orders.add(order3);
@@ -320,7 +336,7 @@ public class cartManagedBean implements Serializable {
 
     public void getMealOrderDetails(ActionEvent event) {
         System.out.println(">>>>> INDIVIDUAL MEAL ORDER DETAILS <<<<<<");
-        selectedItem = (SaleTransactionLineEntity) event.getComponent().getAttributes().get("meal");
+        selectedItem = (SaleTransactionLineItemEntity) event.getComponent().getAttributes().get("meal");
         System.out.println("Meal Item = " + selectedItem.getMeal().getName());
     }
 
@@ -358,22 +374,23 @@ public class cartManagedBean implements Serializable {
     }
 
     public void setAmtToCart(int amtToCart) {
+        System.out.print("setting amtToCart" + amtToCart);
         this.amtToCart = amtToCart;
     }
 
-    public List<SaleTransactionLineEntity> getLineItems() {
+    public List<SaleTransactionLineItemEntity> getLineItems() {
         return lineItems;
     }
 
-    public void setLineItems(List<SaleTransactionLineEntity> lineItems) {
+    public void setLineItems(List<SaleTransactionLineItemEntity> lineItems) {
         this.lineItems = lineItems;
     }
 
-    public SaleTransactionLineEntity getSelectedItem() {
+    public SaleTransactionLineItemEntity getSelectedItem() {
         return selectedItem;
     }
 
-    public void setSelectedItem(SaleTransactionLineEntity selectedItem) {
+    public void setSelectedItem(SaleTransactionLineItemEntity selectedItem) {
         this.selectedItem = selectedItem;
     }
 
@@ -439,6 +456,21 @@ public class cartManagedBean implements Serializable {
 
     public void setIsEmpty(boolean isEmpty) {
         this.isEmpty = isEmpty;
+    }
+
+    /**
+     * @return the currentSelectedBento
+     */
+    public BentoEntity getCurrentSelectedBento() {
+        System.out.println("~~~~~~~~~Current Selected Bento: " + currentSelectedBento);
+        return currentSelectedBento;
+    }
+
+    /**
+     * @param currentSelectedBento the currentSelectedBento to set
+     */
+    public void setCurrentSelectedBento(BentoEntity currentSelectedBento) {
+        this.currentSelectedBento = currentSelectedBento;
     }
 
 }

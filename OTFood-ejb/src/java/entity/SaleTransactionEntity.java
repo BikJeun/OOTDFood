@@ -72,7 +72,7 @@ public class SaleTransactionEntity implements Serializable {
     private DeliveryStatusEnum deliveryStatus;
 
     @OneToMany(fetch = FetchType.EAGER)
-    private List<SaleTransactionLineEntity> saleTransactionLineItemEntities;
+    private List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities;
     @ManyToOne(optional = true, fetch = FetchType.EAGER)
     @JoinColumn(nullable = true)
     private PromoCodeEntity promoCode;
@@ -145,11 +145,11 @@ public class SaleTransactionEntity implements Serializable {
         this.voidRefund = voidRefund;
     }
 
-    public List<SaleTransactionLineEntity> getSaleTransactionLineItemEntities() {
+    public List<SaleTransactionLineItemEntity> getSaleTransactionLineItemEntities() {
         return saleTransactionLineItemEntities;
     }
 
-    public void setSaleTransactionLineItemEntities(List<SaleTransactionLineEntity> saleTransactionLineItemEntities) {
+    public void setSaleTransactionLineItemEntities(List<SaleTransactionLineItemEntity> saleTransactionLineItemEntities) {
         this.saleTransactionLineItemEntities = saleTransactionLineItemEntities;
     }
 

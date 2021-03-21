@@ -24,7 +24,7 @@ import entity.MealEntity;
 import entity.OTUserEntity;
 import entity.ReviewEntity;
 import entity.SaleTransactionEntity;
-import entity.SaleTransactionLineEntity;
+import entity.SaleTransactionLineItemEntity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -183,9 +183,9 @@ public class DataInitializationSessionBean {
             }
 
             // Create SaleTransactions
-            List<SaleTransactionLineEntity> saleTransactionLines = new ArrayList<>();
-            saleTransactionLines.add(new SaleTransactionLineEntity(bentoSets.get(0), 1));
-            saleTransactionLines.add(new SaleTransactionLineEntity(bentoSets.get(1), 2));
+            List<SaleTransactionLineItemEntity> saleTransactionLines = new ArrayList<>();
+            saleTransactionLines.add(new SaleTransactionLineItemEntity(bentoSets.get(0), 1));
+            saleTransactionLines.add(new SaleTransactionLineItemEntity(bentoSets.get(1), 2));
             SaleTransactionEntity saleTransaction = new SaleTransactionEntity(2, 6, BigDecimal.valueOf(8.00 * 2 + 8.50 * 4), new Date(), new Date(500, 10, 10));
             saleTransaction.setSaleTransactionLineItemEntities(saleTransactionLines);
             saleTransactionEntitySessionBeanLocal.createNewSaleTransaction(customerId, cc.getCreditCardId(), addressId, saleTransaction); 

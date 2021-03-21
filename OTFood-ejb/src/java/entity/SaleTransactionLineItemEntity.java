@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
  * @author Ong Bik Jeun
  */
 @Entity
-public class SaleTransactionLineEntity implements Serializable {
+public class SaleTransactionLineItemEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,11 +50,11 @@ public class SaleTransactionLineEntity implements Serializable {
     @JoinColumn(nullable = false)
     private MealEntity meal;
 
-    public SaleTransactionLineEntity() {
+    public SaleTransactionLineItemEntity() {
     }
 
 
-    public SaleTransactionLineEntity(MealEntity meal, Integer quantity) {
+    public SaleTransactionLineItemEntity(MealEntity meal, Integer quantity) {
         this.quantity = quantity;
 //        this.unitPrice = unitPrice;
 //        this.subTotal = subTotal;
@@ -95,10 +95,10 @@ public class SaleTransactionLineEntity implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SaleTransactionLineEntity)) {
+        if (!(object instanceof SaleTransactionLineItemEntity)) {
             return false;
         }
-        SaleTransactionLineEntity other = (SaleTransactionLineEntity) object;
+        SaleTransactionLineItemEntity other = (SaleTransactionLineItemEntity) object;
         if ((this.saleTransactionLineItemId == null && other.saleTransactionLineItemId != null) || (this.saleTransactionLineItemId != null && !this.saleTransactionLineItemId.equals(other.saleTransactionLineItemId))) {
             return false;
         }

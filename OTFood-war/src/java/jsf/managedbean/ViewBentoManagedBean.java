@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.event.TabChangeEvent;
 import util.enumeration.CategoryEnum;
@@ -23,16 +25,21 @@ import util.enumeration.CategoryEnum;
  * @author yuntiangu
  */
 @Named(value = "viewBentoManagedBean")
-@RequestScoped
+@ViewScoped
 public class ViewBentoManagedBean implements Serializable {
 
     @EJB
     private MealEntitySessionBeanLocal mealEntitySessionBeanLocal;
+    
+    @Inject
+    private cartManagedBean cartManagedBean;
 
     private List<BentoEntity> listOfBentos;
-    private List<BentoEntity> listOfAllOfOurFuckingBentos;
+    private List<BentoEntity> listOfAllBentos;
     private List<CategoryEnum> listOfCategories;
     private String selectedCategory;
+    private BentoEntity selectedBento;
+    int selectedBentoQuantity;
 
     @PostConstruct
     public void postConstruct() {
@@ -44,16 +51,17 @@ public class ViewBentoManagedBean implements Serializable {
         this.listOfCategories.add(CategoryEnum.VEGETARIAN);
         this.listOfCategories.add(CategoryEnum.VEGAN);
         this.listOfCategories.add(CategoryEnum.BALANCED);
-        System.out.println(this.listOfCategories);
-        this.setListOfBentos(mealEntitySessionBeanLocal.retriveAllBentos());
-        this.setListOfAllOfOurFuckingBentos(mealEntitySessionBeanLocal.retriveAllBentos());
+        this.setListOfBentos(mealEntitySessionBeanLocal.retrieveBentosByCategory("CHICKEN"));
+        this.setListOfAllBentos(mealEntitySessionBeanLocal.retriveAllBentos());
     }
 
     public ViewBentoManagedBean() {
-        this.selectedCategory = "";
-        this.listOfBentos = new ArrayList<>();   
+        this.selectedBento = new BentoEntity();
+        this.selectedBentoQuantity = 0;
+        this.selectedCategory = "Chicken";
+        
     }
-    
+
     public void refreshListByTabSelected(TabChangeEvent event) {
         System.out.println("List Refreshed");
         String currentTabId = event.getTab().getTitle(); //This will be the CategoryEnum
@@ -61,11 +69,18 @@ public class ViewBentoManagedBean implements Serializable {
         setSelectedCategory(event.getTab().getTitle());
         System.out.println("current category " + getSelectedCategory());
         setListOfBentos(mealEntitySessionBeanLocal.retrieveBentosByCategory(currentTabId));
-        System.out.println("No of Bentos: " + this.listOfBentos.toString());
+        System.out.println("No of Bentos: " + this.listOfBentos.toString());   
     }
+    
+  
 
     public void getListOfBentosByCategory(AjaxBehaviorEvent event) {
         this.setListOfBentos(mealEntitySessionBeanLocal.retrieveBentosByCategory(getSelectedCategory()));
+    }
+    
+    public void addBentoToCart(ActionEvent event) {
+        cartManagedBean.setAmtToCart(selectedBentoQuantity);
+        cartManagedBean.addToCart(selectedBento);
     }
 
     /**
@@ -111,16 +126,45 @@ public class ViewBentoManagedBean implements Serializable {
     }
 
     /**
-     * @return the listOfAllOfOurFuckingBentos
+     * @return the listOfAllBentos
      */
-    public List<BentoEntity> getListOfAllOfOurFuckingBentos() {
-        return listOfAllOfOurFuckingBentos;
+    public List<BentoEntity> getListOfAllBentos() {
+        return listOfAllBentos;
     }
 
     /**
-     * @param listOfAllOfOurFuckingBentos the listOfAllOfOurFuckingBentos to set
+     * @param listOfAllBentos the listOfAllBentos to set
      */
-    public void setListOfAllOfOurFuckingBentos(List<BentoEntity> listOfAllOfOurFuckingBentos) {
-        this.listOfAllOfOurFuckingBentos = listOfAllOfOurFuckingBentos;
+    public void setListOfAllBentos(List<BentoEntity> listOfAllBentos) {
+        this.listOfAllBentos = listOfAllBentos;
+    }
+
+    /**
+     * @return the selectedBento
+     */
+    public BentoEntity getSelectedBento() {
+        return selectedBento;
+    }
+
+    /**
+     * @param selectedBento the selectedBento to set
+     */
+    public void setSelectedBento(BentoEntity selectedBento) {
+        this.selectedBento = selectedBento;
+    }
+
+    /**
+     * @return the selectedBentoQuantity
+     */
+    public int getSelectedBentoQuantity() {
+        return selectedBentoQuantity;
+    }
+
+    /**
+     * @param selectedBentoQuantity the selectedBentoQuantity to set
+     */
+    public void setSelectedBentoQuantity(int selectedBentoQuantity) {
+        System.out.println("Setting selectedBentoQuantity: " + selectedBentoQuantity);
+        this.selectedBentoQuantity = selectedBentoQuantity;
     }
 }

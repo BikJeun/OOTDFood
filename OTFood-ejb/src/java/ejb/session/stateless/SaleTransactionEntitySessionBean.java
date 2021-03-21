@@ -11,7 +11,7 @@ import entity.IngredientEntity;
 import entity.MealEntity;
 import entity.OTUserEntity;
 import entity.SaleTransactionEntity;
-import entity.SaleTransactionLineEntity;
+import entity.SaleTransactionLineItemEntity;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -80,7 +80,7 @@ public class SaleTransactionEntitySessionBean implements SaleTransactionEntitySe
                     user.getSaleTransaction().add(saleTransaction);
                     em.persist(saleTransaction);
                     for (int i = 0; i < saleTransaction.getTotalLineItem(); i++) {
-                        SaleTransactionLineEntity lineItem = saleTransaction.getSaleTransactionLineItemEntities().get(i);
+                        SaleTransactionLineItemEntity lineItem = saleTransaction.getSaleTransactionLineItemEntities().get(i);
                         em.persist(lineItem);
                         for (int j = 0; j < lineItem.getQuantity(); j++) {
                             MealEntity meal = lineItem.getMeal();
