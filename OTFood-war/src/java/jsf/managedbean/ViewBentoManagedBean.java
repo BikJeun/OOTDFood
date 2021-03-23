@@ -2,6 +2,7 @@ package jsf.managedbean;
 
 import ejb.session.stateless.MealEntitySessionBeanLocal;
 import entity.BentoEntity;
+import entity.ReviewEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.TabChangeEvent;
+import org.primefaces.event.ToggleEvent;
 import util.enumeration.CategoryEnum;
 
 /**
@@ -35,10 +37,13 @@ public class ViewBentoManagedBean implements Serializable {
     private List<CategoryEnum> listOfCategories;
     private String selectedCategory;
     private BentoEntity selectedBento;
-    int selectedBentoQuantity;
+    private int selectedBentoQuantity;
+    
+    private List<ReviewEntity> currentBentoReviews;
 
     @PostConstruct
     public void postConstruct() {
+        this.currentBentoReviews = new ArrayList<>();
         this.listOfCategories = new ArrayList<>();
         this.listOfCategories.add(CategoryEnum.CHICKEN);
         this.listOfCategories.add(CategoryEnum.FISH);
@@ -77,9 +82,16 @@ public class ViewBentoManagedBean implements Serializable {
     public void addBentoToCart(ActionEvent event) {
         cartManagedBean.setAmtToCart(selectedBentoQuantity);
         cartManagedBean.addToCart(selectedBento);
+        selectedBentoQuantity = 0;
         PrimeFaces.current().ajax().update("cartForm");
     }
-
+    
+    public void loadBentoReviews() {
+        currentBentoReviews = new ArrayList<>();
+        selectedBento.getReviews().size();
+        currentBentoReviews = selectedBento.getReviews();
+        System.out.println("reviews: " + currentBentoReviews);
+    }
     /**
      * @return the listOfBentos
      */
@@ -140,6 +152,7 @@ public class ViewBentoManagedBean implements Serializable {
      * @return the selectedBento
      */
     public BentoEntity getSelectedBento() {
+        System.out.println("current selected bento: " + selectedBento);
         return selectedBento;
     }
 
@@ -163,5 +176,19 @@ public class ViewBentoManagedBean implements Serializable {
     public void setSelectedBentoQuantity(int selectedBentoQuantity) {
         System.out.println("Setting selectedBentoQuantity: " + selectedBentoQuantity);
         this.selectedBentoQuantity = selectedBentoQuantity;
+    }
+
+    /**
+     * @return the currentBentoReviews
+     */
+    public List<ReviewEntity> getCurrentBentoReviews() {
+        return currentBentoReviews;
+    }
+
+    /**
+     * @param currentBentoReviews the currentBentoReviews to set
+     */
+    public void setCurrentBentoReviews(List<ReviewEntity> currentBentoReviews) {
+        this.currentBentoReviews = currentBentoReviews;
     }
 }

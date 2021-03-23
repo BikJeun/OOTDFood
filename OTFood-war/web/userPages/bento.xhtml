@@ -15,12 +15,21 @@
 
         <h:outputScript library="js" name="ifSpinnerQuantityZero.js" />
         <h:form>
+            
             <p:dialog header="Enter Bento Quantiy" widgetVar="enterQtyDlg" >
                 <p:outputLabel for="bentoQty" value="Quantity"/>
-                <p:spinner id="bentoQty" value="#{viewBentoManagedBean.selectedBentoQuantity}"/>
+                <p:spinner id="bentoQty" value="#{viewBentoManagedBean.selectedBentoQuantity}" min="0"/>
                 <p:commandButton title="Add To Cart" actionListener="#{viewBentoManagedBean.addBentoToCart}" onclick="PF('enterQtyDlg').hide();"/>
             </p:dialog>
             
+            <p:dialog id="bentoReviewDlg" widgetVar="bentoReviewDlg" header="#{viewBentoManagedBean.selectedBento.name}'s Reviews" closable="true">
+                <p:repeat value="#{viewBentoManagedBean.currentBentoReviews}" var="review">
+                    <p:outputLabel value="#{review.description}"/><br/>
+                </p:repeat>
+            </p:dialog>
+            
+            
+
             <p:tabView value="#{viewBentoManagedBean.listOfCategories}" var="bentoCategory" cache="false">
 
                 <p:ajax event="tabChange" listener="#{viewBentoManagedBean.refreshListByTabSelected}" update="@form"/>
@@ -31,6 +40,7 @@
                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                 gridIcon="pi pi-th-large" listIcon="pi pi-bars"
                                 layout="grid">
+                        
 
                         <p:dataViewGridItem>
 
@@ -43,6 +53,10 @@
 
                             <p:commandButton title="Order" onclick="PF('enterQtyDlg').show();">
                                 <f:setPropertyActionListener value="#{bentoEntity}" target="#{viewBentoManagedBean.selectedBento}" />
+                            </p:commandButton>
+
+                            <p:commandButton title="Review" action="#{viewBentoManagedBean.loadBentoReviews()}" update="@form" oncomplete="PF('bentoReviewDlg').show();">
+                                <f:setPropertyActionListener value="#{bentoEntity}" target="#{viewBentoManagedBean.selectedBento}"/>
                             </p:commandButton>
 
                         </p:dataViewGridItem>
@@ -59,6 +73,11 @@
                             <p:commandButton title="Order" onclick="PF('enterQtyDlg').show();">
                                 <f:setPropertyActionListener value="#{bentoEntity}" target="#{viewBentoManagedBean.selectedBento}" />
                             </p:commandButton>
+
+                            <p:commandButton title="Review" action="#{viewBentoManagedBean.loadBentoReviews()}" update="@form" oncomplete="PF('bentoReviewDlg').show();">
+                                <f:setPropertyActionListener value="#{bentoEntity}" target="#{viewBentoManagedBean.selectedBento}"/>
+                            </p:commandButton>
+
                         </p:dataViewListItem>
 
                     </p:dataView>
