@@ -15,7 +15,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.TabChangeEvent;
-import org.primefaces.event.ToggleEvent;
 import util.enumeration.CategoryEnum;
 
 /**
